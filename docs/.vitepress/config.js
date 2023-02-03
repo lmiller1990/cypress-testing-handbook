@@ -1,7 +1,7 @@
 export default {
   title: 'Cypress Testing Handbook',
   description: 'Just playing around.',
-  base: '/cypress-testing-handbook/',
+  // base: '/cypress-testing-handbook/',
   themeConfig: {
     sidebar: [
       {
