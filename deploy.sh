@@ -1,4 +1,5 @@
-git checkout gh-pages
+git branch -D gh-pages
+git checkout -b gh-pages
 yarn docs:build
 rm -rf docs
 mv docs/.vitepress/dist/ docs
