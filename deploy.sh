@@ -5,5 +5,5 @@ rm -rf docs
 mv docs/.vitepress/dist/ docs
 git add -A
 git commit -m "deploy"
-git push --set-upstream origin gh-pages
+git push --set-upstream origin gh-pages -f
 git checkout main
