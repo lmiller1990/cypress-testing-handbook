@@ -1,7 +1,7 @@
 import SignUp from "./SignUp.vue";
 
 describe("SignUp", () => {
-  it("renders without any errors by default", () => {
+  it("validates form and submits correct payload", () => {
     cy.mount(SignUp);
 
     // Submit - errors are shown
