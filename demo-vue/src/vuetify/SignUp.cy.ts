@@ -2,7 +2,7 @@ import SignUp from "./SignUp.vue";
 
 describe("SignUp", () => {
   it("validates form and submits correct payload", () => {
-    cy.mount(SignUp);
+    cy.mountWithVuetify(SignUp);
 
     // Submit - errors are shown
     cy.get("button").contains("Submit").click();

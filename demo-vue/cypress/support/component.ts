@@ -30,9 +30,35 @@ function mountWithVuetify(
 declare global {
   namespace Cypress {
     interface Chainable {
-      mount: typeof mountWithVuetify;
+      mount: typeof mount;
+      mountWithVuetify: typeof mountWithVuetify;
+      mountWithPinia: typeof mountWithPinia;
     }
   }
 }
 
-Cypress.Commands.add("mount", mountWithVuetify);
+import { createPinia, Pinia, setActivePinia } from "pinia";
+
+let pinia: Pinia
+
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
+})
+
+function mountWithPinia (
+  Comp: DefineComponent,
+  options?: Parameters<typeof mount>[1]
+): Cypress.Chainable {
+  return mount(Comp, {
+    ...options,
+    global: {
+      ...options?.global,
+      plugins: [...(options?.global?.plugins ?? []), pinia],
+    },
+  });
+}
+
+Cypress.Commands.add("mountWithVuetify", mountWithVuetify);
+Cypress.Commands.add("mount", mount);
+Cypress.Commands.add("mountWithPinia", mountWithPinia);
