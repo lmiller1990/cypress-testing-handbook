@@ -47,7 +47,9 @@ describe("<Keyboard />", () => {
 
 It passes.
 
-![](./images/input-1.md)
+![](./images/input-1.png)
+
+## Clearing Text
 
 What if we change the name? You might attempt something like:
 
@@ -68,7 +70,7 @@ describe("<Keyboard />", () => {
 
 No good - it appends to the existing test.
 
-![](./images/input-2.md)
+![](./images/input-2.png)
 
 You need to `cy.clear()` to clear the text:
 
@@ -224,6 +226,8 @@ expect(req.body).to.eql(...)
 ```ts
 .its("request.body").should(...)
 ```
+
+Both do the same thing - so it's a matter of personal preference.
 
 ## Conclusion
 

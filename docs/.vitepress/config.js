@@ -14,6 +14,12 @@ export default {
         ],
       },
       {
+        text: "User Interactions",
+        items: [
+          { text: "Typing & Forms", link: "/simulating-user-input" },
+        ]
+      },
+      {
         text: "Integrating with Third Party Libraries",
         items: [
           { text: "Vuetify", link: "/vuetify" },
