@@ -1,6 +1,6 @@
 # Testing Props
 
-One of the primary philosophies championed by React, Vue and other similar libraries is the concept f `props` - from a component's perspective, read only, one way data. A component's output is a function of its state, which usually means *local state* and *props*.
+One of the primary philosophies championed by React, Vue and other similar libraries is the concept f `props` - from a component's perspective, read only, one way data. A component's output is a function of its state, which usually means _local state_ and _props_.
 
 This is the corner stone of the current generation of component libraries, and this is where we start; given X prop, a component should render Y.
 
@@ -48,7 +48,7 @@ describe("<Greeter />", () => {
 
 Simple enough - we find the `h1` and assert it contains the correct text with `contains`.
 
-The other scenario is equally as simple to write a test for. To pass a prop, we use the second parameter to `mount`, which is an object of options. The underlying library is Vue Test Utils, and you can see the full list of options [here](https://test-utils.vuejs.org/api/). 
+The other scenario is equally as simple to write a test for. To pass a prop, we use the second parameter to `mount`, which is an object of options. The underlying library is Vue Test Utils, and you can see the full list of options [here](https://test-utils.vuejs.org/api/).
 
 ```ts
 import Greeter from "./Greeter.vue";
@@ -79,4 +79,4 @@ In Cypress:
 - Mount a component with `cy.mount`.
 - Assert some text was rendered with `cy.contains`.
 - Pass `props` using the second parameter to `mount`.
-- The full list of mounting options is from Vue Test Utils, documented [here](https://test-utils.vuejs.org/api/). 
+- The full list of mounting options is from Vue Test Utils, documented [here](https://test-utils.vuejs.org/api/).

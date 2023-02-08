@@ -5,7 +5,7 @@ describe("<Numbers />", () => {
   it("renders", () => {
     cy.mount(Numbers, {
       props: {
-        parity: 'odd'
+        parity: "odd",
       },
     });
 

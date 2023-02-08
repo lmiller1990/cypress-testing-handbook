@@ -4,12 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "prettier": "^2.8.4",
     "vitepress": "^1.0.0-alpha.43",
     "vue": "^3.2.45"
   },
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "lint": "prettier --write ."
   }
 }

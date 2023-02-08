@@ -39,14 +39,14 @@ declare global {
 
 import { createPinia, Pinia, setActivePinia } from "pinia";
 
-let pinia: Pinia
+let pinia: Pinia;
 
 beforeEach(() => {
-  pinia = createPinia()
-  setActivePinia(pinia)
-})
+  pinia = createPinia();
+  setActivePinia(pinia);
+});
 
-function mountWithPinia (
+function mountWithPinia(
   Comp: DefineComponent,
   options?: Parameters<typeof mount>[1]
 ): Cypress.Chainable {

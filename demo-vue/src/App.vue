@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import SignUp from './vuetify/SignUp.vue';
+import HelloWorld from "./components/HelloWorld.vue";
+import SignUp from "./vuetify/SignUp.vue";
 </script>
 
 <template>

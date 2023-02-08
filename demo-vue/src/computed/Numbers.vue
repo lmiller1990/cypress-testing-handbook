@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { Parity } from './numbers.js'
-import { getNumbers } from './numbers.js'
+import { computed } from "vue";
+import type { Parity } from "./numbers.js";
+import { getNumbers } from "./numbers.js";
 
 const props = defineProps<{
-  parity: Parity
-}>()
+  parity: Parity;
+}>();
 
 const numbers = computed(() => {
-  return getNumbers(props.parity)
-})
+  return getNumbers(props.parity);
+});
 </script>
 
 <template>

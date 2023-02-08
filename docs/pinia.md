@@ -32,34 +32,34 @@ I used Cypress to develop this entire component from scratch. It's a simple `<To
 In a standard Vue app, you install Pinia like this:
 
 ```ts
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import App from "./App.vue";
 
-const pinia = createPinia()
-const app = createApp(App)
+const pinia = createPinia();
+const app = createApp(App);
 
-app.use(pinia)
-app.mount('#app')
+app.use(pinia);
+app.mount("#app");
 ```
 
-We need to do something similar in Cypress. We could do this on a spec-by-spec basis, but this creates a lot of boilerplate. Instead, we can do something similar to  the [Vuetify guide](./vuetify). One key difference is we want a fresh Pinia store for each test. This will give us a clean slate, and ensure our tests are deterministic.
+We need to do something similar in Cypress. We could do this on a spec-by-spec basis, but this creates a lot of boilerplate. Instead, we can do something similar to the [Vuetify guide](./vuetify). One key difference is we want a fresh Pinia store for each test. This will give us a clean slate, and ensure our tests are deterministic.
 
 I like to do this in my `supportFile`, which is `cypress/support/component.ts` by default. All of `supportFile` is executed before each spec runs.
 
 ```ts
 import { createPinia, Pinia, setActivePinia } from "pinia";
 
-let pinia: Pinia
+let pinia: Pinia;
 
 // Run this code before each *test*.
 beforeEach(() => {
   // New Pinia
-  pinia = createPinia()
+  pinia = createPinia();
 
   // Set current Pinia instance
-  setActivePinia(pinia)
-})
+  setActivePinia(pinia);
+});
 ```
 
 Next, we need to make sure we install Pinia each time we mount a component, and pass the newly created instance. I like to do this with a custom `cy.mount()` function. In my usual applications, I normally just call this `cy.mount()`. To be explicit, I'll be naming it `cy.mountWithPinia` in this article.
@@ -67,18 +67,18 @@ Next, we need to make sure we install Pinia each time we mount a component, and 
 ```ts {14-35}
 import { createPinia, Pinia, setActivePinia } from "pinia";
 
-let pinia: Pinia
+let pinia: Pinia;
 
 // Run this code before each *test*.
 beforeEach(() => {
   // New Pinia
-  pinia = createPinia()
+  pinia = createPinia();
 
   // Set current Pinia instance
-  setActivePinia(pinia)
-})
+  setActivePinia(pinia);
+});
 
-function mountWithPinia (
+function mountWithPinia(
   Comp: DefineComponent,
   options?: Parameters<typeof mount>[1]
 ): Cypress.Chainable {
@@ -125,11 +125,11 @@ interface Todo {
   completed: boolean;
 }
 
-export const filterTypes = ["all", "completed", "outstanding"] as const
+export const filterTypes = ["all", "completed", "outstanding"] as const;
 
 interface TodosState {
   todos: Todo[];
-  filter: typeof filterTypes[number];
+  filter: (typeof filterTypes)[number];
   nextId: 0;
 }
 
@@ -175,16 +175,22 @@ Finally, a component that uses the `todosStore`. It's self explanatory:
 
 ```vue
 <script lang="ts" setup>
-import { useTodos, filterTypes } from './store';
+import { useTodos, filterTypes } from "./store";
 
-const todosStore = useTodos()
+const todosStore = useTodos();
 </script>
 
 <template>
   <div class="m-4">
     <ul>
       <li v-for="todo of todosStore.state.todos" :key="todo.id">
-        <input data-cy="todo" type="checkbox" v-model="todo.completed" :id="`todo-${todo.id}`" class="mr-2" />
+        <input
+          data-cy="todo"
+          type="checkbox"
+          v-model="todo.completed"
+          :id="`todo-${todo.id}`"
+          class="mr-2"
+        />
         <label :for="`todo-${todo.id}`">
           {{ todo.text }}
         </label>
@@ -220,11 +226,11 @@ describe("Todos", () => {
 
     cy.mountWithPinia(Todos);
 
-    expect(todosStore.state.filter).to.eql('all')
-    expect(todosStore.filteredTodos).to.have.length(4)
+    expect(todosStore.state.filter).to.eql("all");
+    expect(todosStore.filteredTodos).to.have.length(4);
 
     for (const todo of todosStore.filteredTodos) {
-      cy.get('label').contains(todo.text)
+      cy.get("label").contains(todo.text);
     }
   });
 });
@@ -272,7 +278,7 @@ describe("Todos", () => {
       .click()
       .then(() => {
         expect(todosStore.completedTodos).to.have.length(1);
-        expect(todosStore.completedTodos[0].text).to.contain('Write code')
+        expect(todosStore.completedTodos[0].text).to.contain("Write code");
       });
   });
 });
@@ -286,7 +292,7 @@ cy.get("label")
   .click()
   .then(() => {
     expect(todosStore.completedTodos).to.have.length(1);
-    expect(todosStore.completedTodos[0].text).to.contain('Write code')
+    expect(todosStore.completedTodos[0].text).to.contain("Write code");
   });
 ```
 
@@ -298,16 +304,22 @@ To finish this example, we will let the user filter the todos.
 
 ```vue {8-18,21}
 <script lang="ts" setup>
-import { useTodos, filterTypes } from './store';
+import { useTodos, filterTypes } from "./store";
 
-const todosStore = useTodos()
+const todosStore = useTodos();
 </script>
 
 <template>
   <div class="m-4">
     <ul>
       <li v-for="filter of filterTypes" :key="filter">
-        <input type="radio" v-model="todosStore.state.filter" :value="filter" :id="filter" class="mr-2" />
+        <input
+          type="radio"
+          v-model="todosStore.state.filter"
+          :value="filter"
+          :id="filter"
+          class="mr-2"
+        />
         <label :for="filter">
           {{ filter }}
         </label>
@@ -318,7 +330,13 @@ const todosStore = useTodos()
 
     <ul>
       <li v-for="todo of todosStore.filteredTodos" :key="todo.id">
-        <input data-cy="todo" type="checkbox" v-model="todo.completed" :id="`todo-${todo.id}`" class="mr-2" />
+        <input
+          data-cy="todo"
+          type="checkbox"
+          v-model="todo.completed"
+          :id="`todo-${todo.id}`"
+          class="mr-2"
+        />
         <label :for="`todo-${todo.id}`">
           {{ todo.text }}
         </label>
@@ -362,12 +380,12 @@ describe("Todos", () => {
       .get('[data-cy="todo"]')
       .should("have.length", 3);
   });
-})
+});
 ```
 
 ![](./images/pinia-2.png)
 
-Works great! We could write some more targeted unit tests for the `todosStore`. I would consider this if the logic became signficantly more complex. Since this application is simple, I'm happy to test the store implicitly via the user interface, but it can be difficult to debug complex business logic in this fashion. 
+Works great! We could write some more targeted unit tests for the `todosStore`. I would consider this if the logic became signficantly more complex. Since this application is simple, I'm happy to test the store implicitly via the user interface, but it can be difficult to debug complex business logic in this fashion.
 
 If I decided I needed more granular unit tests, I'd recommend a similar approach to the one described in [testing computed properties](./computed-properties). I would use [Jest](https://jestjs.io) or [Vitest](https://vitest.dev) for the unit tests, and Cypress for the component tests, to ensure everything is correctly wired up.
 
@@ -377,4 +395,4 @@ If I decided I needed more granular unit tests, I'd recommend a similar approach
 - Use a `beforeEach()` in `supportFile` to do pre-test setup.
 - Use `setActivePinia` to correctly create a new Pinia store for each test.
 - Write a custom `cy.mount()` function to reuse in all your tests.
-- `global.plugins` is part of Vue Test Utils, which is used by Cypress for Vue. The full list of mounting options is documented [here](https://test-utils.vuejs.org/api/). 
+- `global.plugins` is part of Vue Test Utils, which is used by Cypress for Vue. The full list of mounting options is documented [here](https://test-utils.vuejs.org/api/).

@@ -17,18 +17,18 @@ This guide installs Vuetify [manually](https://next.vuetifyjs.com/en/getting-sta
 Vuetify recommends configuring the library in `main.ts`:
 
 ```ts
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
 
 const vuetify = createVuetify({
   components,
   directives,
-})
+});
 
-const app = createApp(App)
-app.use(vuetify)
+const app = createApp(App);
+app.use(vuetify);
 ```
 
 We will need to do something similar in our Cypress `supportFile`, which is in `cypress/support/component.ts` by default. This is because `main.ts` is not executed in our component tests. In general, any global setup you do in `main.ts` will also need required in `supportFile`. This doesn't mean you need to duplicate code - you could make a function that both modules import. This example will just copy and paste the setup, to keep things as simple as possible.
@@ -39,47 +39,47 @@ In this example, we will test a user sign up form created using Vuetify componen
 
 ```vue
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
-const valid = ref(false) 
+const valid = ref(false);
 
-const username = ref('')
+const username = ref("");
 const usernameRules = [
   (value: string) => {
     if (value) {
-      return true
+      return true;
     }
-    return 'Name is required.'
+    return "Name is required.";
   },
   (value: string) => {
     if (value.length <= 10) {
-      return true
+      return true;
     }
-    return 'Name must be less than 10 characters.'
+    return "Name must be less than 10 characters.";
   },
-]
+];
 
-const email = ref('')
+const email = ref("");
 const emailRules = [
   (value: string) => {
-    if (value.includes('@')) {
-      return true
+    if (value.includes("@")) {
+      return true;
     }
-    return 'Must be a valid email.'
+    return "Must be a valid email.";
   },
-]
+];
 
-function submit () {
+function submit() {
   if (!valid.value) {
-    return
+    return;
   }
 
   window.fetch("/users/sign_up", {
     body: JSON.stringify({
       username: username.value,
       email: email.value,
-    })
-  })
+    }),
+  });
 }
 </script>
 
@@ -88,12 +88,24 @@ function submit () {
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
-          <v-text-field name="username" v-model="username" :rules="usernameRules" :counter="10" label="Username"
-            required />
+          <v-text-field
+            name="username"
+            v-model="username"
+            :rules="usernameRules"
+            :counter="10"
+            label="Username"
+            required
+          />
         </v-col>
 
         <v-col cols="12" md="4">
-          <v-text-field name="email" v-model="email" :rules="emailRules" label="Email" required />
+          <v-text-field
+            name="email"
+            v-model="email"
+            :rules="emailRules"
+            label="Email"
+            required
+          />
         </v-col>
       </v-row>
       <v-btn type="submit" block class="mt-2">Submit</v-btn>
@@ -111,13 +123,13 @@ It looks like this in the browser:
 Let's follow the previous examples, and mount our component using `cy.mount`:
 
 ```ts
-import SignUp from "./SignUp.vue"
+import SignUp from "./SignUp.vue";
 
 describe("SignUp", () => {
   it("renders without any errors by default", () => {
-    cy.mount(SignUp)
-  })
-})
+    cy.mount(SignUp);
+  });
+});
 ```
 
 Underwhelming.
@@ -127,30 +139,30 @@ Underwhelming.
 The reason it isn't rendering correctly is because we haven't configured Vuetify. This component is rendered in isolation. Right now, we are installing it globally in `main.ts`. We need to do something similar here:
 
 ```ts {3-11,16-18}
-import SignUp from './SignUp.vue'
+import SignUp from "./SignUp.vue";
 
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
 
 const vuetify = createVuetify({
   components,
   directives,
-})
+});
 
 describe("SignUp", () => {
   it("renders without any errors by default", () => {
     cy.mount(SignUp, {
       global: {
-        plugins: [vuetify]
-      }
-    })
-  })
-})
+        plugins: [vuetify],
+      },
+    });
+  });
+});
 ```
 
-`global` and `plugins` are part of Vue Test Utils. Those, and the other options, are documented [here](https://test-utils.vuejs.org/api/). 
+`global` and `plugins` are part of Vue Test Utils. Those, and the other options, are documented [here](https://test-utils.vuejs.org/api/).
 
 Now the components are correctly displayed:
 
@@ -161,17 +173,17 @@ Now the components are correctly displayed:
 This works fine, but if you are using Vuetify, chances are you want it available in all your component tests, without having to install it on a a spec by spec basis. In this case, you can customize your `cy.mount` function. By default, that's in `cypress/support/component.ts`, and looks something like this:
 
 ```ts
-import { mount } from 'cypress/vue'
+import { mount } from "cypress/vue";
 
 declare global {
   namespace Cypress {
     interface Chainable {
-      mount: typeof mount
+      mount: typeof mount;
     }
   }
 }
 
-Cypress.Commands.add('mount', mount)
+Cypress.Commands.add("mount", mount);
 ```
 
 Let's update it to include Vuetify.
@@ -203,7 +215,6 @@ function mountWithVuetify(
   });
 }
 
-
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -220,13 +231,13 @@ I want to preserve the ability to pass other mounting options, such as `props`, 
 Now our test is much more concise:
 
 ```ts
-import SignUp from './SignUp.vue'
+import SignUp from "./SignUp.vue";
 
 describe("SignUp", () => {
   it("renders without any errors by default", () => {
-    cy.mount(SignUp)
-  })
-})
+    cy.mount(SignUp);
+  });
+});
 ```
 
 ## Testing the Component
@@ -287,4 +298,4 @@ The test passes!
 - Install Vuetify using `global.plugins`
 - Create a custom `mount` function is `cypress/support/component.ts` to reuse in all your tests.
 - Use `cy.intercept()` to stub out a request, making your tests more performance and deterministic.
-- `global.plugins` is part of Vue Test Utils, which is used by Cypress for Vue. The full list of mounting options is documented [here](https://test-utils.vuejs.org/api/). 
+- `global.plugins` is part of Vue Test Utils, which is used by Cypress for Vue. The full list of mounting options is documented [here](https://test-utils.vuejs.org/api/).

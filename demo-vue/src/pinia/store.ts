@@ -7,11 +7,11 @@ interface Todo {
   completed: boolean;
 }
 
-export const filterTypes = ["all", "completed", "outstanding"] as const
+export const filterTypes = ["all", "completed", "outstanding"] as const;
 
 interface TodosState {
   todos: Todo[];
-  filter: typeof filterTypes[number];
+  filter: (typeof filterTypes)[number];
   nextId: 0;
 }
 
