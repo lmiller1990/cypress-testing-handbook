@@ -24,6 +24,7 @@ export default {
         items: [
           { text: "Vuetify", link: "/vuetify" },
           { text: "Pinia", link: "/pinia" },
+          { text: "Vue Router", link: "/vue-router" },
         ],
       },
     ],

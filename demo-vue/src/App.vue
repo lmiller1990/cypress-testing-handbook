@@ -14,4 +14,5 @@ import SignUp from "./vuetify/SignUp.vue";
   </div>
   <HelloWorld msg="Vite + Vue" /> -->
   <SignUp />
+  <RouterView />
 </template>
