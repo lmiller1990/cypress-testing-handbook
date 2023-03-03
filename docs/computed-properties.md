@@ -155,8 +155,8 @@ The `<Numbers>` component is now vastly simplified:
 ```vue
 <script lang="ts" setup>
 import { computed } from "vue";
-import type { Parity } from "./numbers.js";
-import { getNumbers } from "./numbers.js";
+import type { Parity } from "./numbers.ts";
+import { getNumbers } from "./numbers.ts";
 
 const props = defineProps<{
   parity: Parity;
