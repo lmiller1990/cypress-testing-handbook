@@ -257,7 +257,7 @@ The problem is the assumption from earlier. Here it is, as a reminder:
 
 **`<BookTable>` expects to be rendered when the current route is `/books`**.
 
-Right now, we are mounting `<BookTable>` as the main component. It is designed to be rendered when the route is `/books`. It contains a `<RouterView>` which is *supposed* to match `/books/:id` (which is does, in the full applcation with the correct component hierarchy). What's happening in our test, however, is:
+Right now, we are mounting `<BookTable>` as the main component. It is designed to be rendered when the route is `/books`. It contains a `<RouterView>` which is *supposed* to match `/books/:id` (which is does, in the full application with the correct component hierarchy). What's happening in our test, however, is:
 
 1. We mount `<BookTable>`
 2. It renders `<RouterView>`
