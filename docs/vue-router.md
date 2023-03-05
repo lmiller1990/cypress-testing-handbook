@@ -396,6 +396,6 @@ This is why I think routing is better tested using an End to End test. You can s
 
 - Create a router with [Memory History](https://router.vuejs.org/guide/essentials/history-mode.html#memory-mode) for testing.
 - Create a custom `mount` function with a router is `cypress/support/component.ts` to reuse in all your tests.
-- Navigate manually and use `router.isReady()` befor mounting the component.
+- Navigate manually and use `router.isReady()` before mounting the component.
 - Stub out `<RouterView>` for more reliable, isolated tests.
 - `global.stubs` is part of Vue Test Utils, which is used by Cypress for Vue. The full list of mounting options is documented [here](https://test-utils.vuejs.org/api/).
